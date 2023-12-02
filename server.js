@@ -14,8 +14,7 @@ const replicate = new Replicate({
 });
 
 app.post('/api/text', async (request, response) => {
-  const version =
-    '8e6975e5ed6174911a6ff3d60540dfd4844201974602551e10e9e87ab143d81e';
+  const version = '8e6975e5ed6174911a6ff3d60540dfd4844201974602551e10e9e87ab143d81e';
   const model = 'meta/llama-2-7b-chat';
   const input = {
     prompt: request.body.prompt,
@@ -28,8 +27,7 @@ app.post('/api/text', async (request, response) => {
 
 app.post('/api/image', async (request, response) => {
   const model = 'stability-ai/sdxl';
-  const version =
-    '39ed52f2a78e934b3ba6e2a89f5b1c712de7dfea535525255b1aa35c5565e08b';
+  const version = '39ed52f2a78e934b3ba6e2a89f5b1c712de7dfea535525255b1aa35c5565e08b';
   const input = {
     prompt: request.body.prompt,
   };
