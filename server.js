@@ -19,66 +19,51 @@ const replicate = new Replicate({
 
 // Define endpoint for handling text generation requests
 app.post('/api/text', async (request, response) => {
-  // Set model and version identifiers for text generation using Llama-2 model
-  const version = '8e6975e5ed6174911a6ff3d60540dfd4844201974602551e10e9e87ab143d81e';
+  // Set the model
   const model = 'meta/meta-llama-3-8b-instruct';
 
-  // Prepare input payload with prompt and system prompt
   const input = {
     prompt: request.body.prompt,
     system_prompt: 'You are the Llama AI model hosted on Replicate.',
   };
-
-  // Log the input payload for debugging
   console.log(input);
 
   // Run the text generation model and await its output
-  const output = await replicate.run(`${model}:${version}`, { input });
-
-  // Send the model output as a JSON response
+  const output = await replicate.run(model, { input });
+  console.log(output);
   response.json({ output });
 });
 
 // Define endpoint for handling image generation requests
 app.post('/api/image', async (request, response) => {
-  // Set model and version identifiers for image generation using SDXL model
-  const model = 'stability-ai/sdxl';
-  const version = '39ed52f2a78e934b3ba6e2a89f5b1c712de7dfea535525255b1aa35c5565e08b';
+  const model =
+    'stability-ai/sdxl:7762fd07cf82c948538e41f63f77d685e02b063e37e496e96eefd46c929f9bdc';
 
-  // Prepare input payload with the provided prompt
+  // Prepare input
   const input = {
     prompt: request.body.prompt,
   };
-
-  // Log the input payload for debugging
   console.log(input);
 
   // Run the image generation model and await its output
-  const output = await replicate.run(`${model}:${version}`, { input });
+  const output = await replicate.run(model, { input });
 
   // Extract the image URL from the output
   const url = output[0];
-
-  // Log the image URL for debugging
   console.log(url);
 
   // Fetch the image data from the generated URL
   const imageResponse = await fetch(url);
-
   // Convert the image data to an array buffer
   const arrayBuffer = await imageResponse.arrayBuffer();
-
   // Convert the array buffer to a buffer
   const buffer = Buffer.from(arrayBuffer);
-
   // Encode the buffer as a base64 string
   const base64Image = buffer.toString('base64');
-
   // Send the base64-encoded image as a JSON response
   response.json({ image: base64Image });
 });
 
-// Define the port for the server, using environment variable or defaulting to 3001
 const PORT = process.env.PORT || 3001;
 
 // Start the server and log a message with the URL
